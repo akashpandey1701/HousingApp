@@ -23,17 +23,20 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
+                android:id="@+id/headNameTextView"
                 android:layout_height="wrap_content"
                 android:text="मुखिया का नाम:"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/villageNameTextView"
                 android:text="ग्राम:"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/districtTextView"
                 android:text="जिला:"/>
 
 
@@ -49,6 +52,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="wrap_content"
+                    android:id="@+id/syncButton"
                     android:layout_height="wrap_content"
                     android:text="सिंक"
                     android:textSize="23sp"
