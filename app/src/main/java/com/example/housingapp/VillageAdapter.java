@@ -1,11 +1,7 @@
 package com.example.housingapp;
 
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -40,6 +37,15 @@ public class VillageAdapter extends RecyclerView.Adapter<VillageAdapter.VillageV
         holder.headNameTextView.setText("मुखिया का नाम: " + village.getHeadName());
         holder.villageNameTextView.setText("ग्राम: " + village.getVillageName());
         holder.districtTextView.setText("जिला: " + village.getDistrict());
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MainActivity2.class);
+                // Pass any data you need to MainActivity2 using intent.putExtra()
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -52,6 +58,7 @@ public class VillageAdapter extends RecyclerView.Adapter<VillageAdapter.VillageV
         TextView villageNameTextView;
         TextView districtTextView;
         Button syncButton;
+        CardView cardView;
 
         public VillageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,6 +66,7 @@ public class VillageAdapter extends RecyclerView.Adapter<VillageAdapter.VillageV
             villageNameTextView = itemView.findViewById(R.id.villageNameTextView);
             districtTextView = itemView.findViewById(R.id.districtTextView);
             syncButton = itemView.findViewById(R.id.syncButton);
+            cardView = itemView.findViewById(R.id.cardView);
         }
     }
 }
