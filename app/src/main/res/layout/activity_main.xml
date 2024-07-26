@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@color/material_dynamic_secondary80"
+    android:background="#B0C0CA"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -14,7 +14,7 @@
         android:paddingTop="10dp"
         android:layout_height="80dp"
         android:orientation="horizontal"
-        android:background="@color/material_dynamic_secondary80"
+        android:background="#BDD2DF"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
