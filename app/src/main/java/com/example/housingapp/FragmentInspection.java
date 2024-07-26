@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -19,11 +20,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+
 public class FragmentInspection extends Fragment {
     private static final int IMAGE_ID1 = 1;
     private static final int IMAGE_ID2 = 2;
     private static final int IMAGE_ID3 = 3;
     private static final int REQUEST_CAMERA_PERMISSION = 100;
+
+    private static final int location_request=101;
 
     Button photobutton1;
     Button photobutton2;
@@ -31,6 +38,9 @@ public class FragmentInspection extends Fragment {
     ImageView imageView;
     ImageView imageView2;
     ImageView imageView3;
+    private double latitude;
+    private  double longitude;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     @Nullable
     @Override
@@ -47,12 +57,13 @@ public class FragmentInspection extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         imageView2 = view.findViewById(R.id.imageView2);
         imageView3 = view.findViewById(R.id.imageView3);
-
+        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(requireActivity());
         photobutton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
                         == PackageManager.PERMISSION_GRANTED) {
+                    fetchLocation();
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, IMAGE_ID1);
                 } else {
@@ -68,6 +79,7 @@ public class FragmentInspection extends Fragment {
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
                         == PackageManager.PERMISSION_GRANTED) {
+                    fetchLocation();
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, IMAGE_ID2);
                 } else {
@@ -83,6 +95,7 @@ public class FragmentInspection extends Fragment {
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
                         == PackageManager.PERMISSION_GRANTED) {
+                    fetchLocation();
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, IMAGE_ID3);
                 } else {
@@ -93,19 +106,48 @@ public class FragmentInspection extends Fragment {
             }
         });
     }
+    private void fetchLocation() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                latitude = location.getLatitude();
+                                longitude = location.getLongitude();
+                                Toast.makeText(getContext(), "Location: " + latitude + ", " + longitude, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            ActivityCompat.requestPermissions(requireActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    location_request);
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CAMERA_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission granted, re-trigger the action
-                photobutton1.performClick(); // You might want to trigger the button that was clicked
-            } else {
-                // Permission denied
-                Toast.makeText(getContext(), "Camera permission is required to take photos", Toast.LENGTH_SHORT).show();
+         if (requestCode==location_request) {
+            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+            {
+                fetchLocation();
             }
-        }
+            else
+            {
+                Toast.makeText(getContext(),"Location permisssion required",Toast.LENGTH_SHORT).show();
+            }
+
+        } else if (requestCode == REQUEST_CAMERA_PERMISSION) {
+             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                 photobutton1.performClick();
+             } else {
+                 Toast.makeText(getContext(), "Camera permission is required to take photos", Toast.LENGTH_SHORT).show();
+             }
+         }
     }
 
     @Override
