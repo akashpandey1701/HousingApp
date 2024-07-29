@@ -46,9 +46,6 @@ public class MainActivity extends AppCompatActivity {
         villageList.add(new Village("मुखिया 1", "ग्राम 1", "जिला 1"));
         villageList.add(new Village("मुखिया 2", "ग्राम 2", "जिला 2"));
         villageList.add(new Village("मुखिया 3", "ग्राम 3", "जिला 3"));
-        villageList.add(new Village("मुखिया 1", "ग्राम 1", "जिला 1"));
-        villageList.add(new Village("मुखिया 2", "ग्राम 2", "जिला 2"));
-        villageList.add(new Village("मुखिया 3", "ग्राम 3", "जिला 3"));
 
         adapter = new VillageAdapter(villageList, this);
         recyclerView.setAdapter(adapter);

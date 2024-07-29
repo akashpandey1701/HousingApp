@@ -1,6 +1,9 @@
 package com.example.housingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -17,6 +20,7 @@ public class MainActivity3 extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     private AppCompatButton buttonTab1, buttonTab2;
+    private ImageView backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +31,17 @@ public class MainActivity3 extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         buttonTab1 = findViewById(R.id.buttonTab1);
         buttonTab2 = findViewById(R.id.buttonTab2);
-
+        backButton=findViewById(R.id.backButton);
         MyFragmentStateAdapter adapter = new MyFragmentStateAdapter(this);
         viewPager.setAdapter(adapter);
 
 
         buttonTab1.setOnClickListener(v -> viewPager.setCurrentItem(0));
         buttonTab2.setOnClickListener(v -> viewPager.setCurrentItem(1));
-
-
+        backButton.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity3.this, MainActivity2.class);
+            startActivity(i);
+        });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

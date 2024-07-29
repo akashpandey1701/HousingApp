@@ -17,7 +17,7 @@
         android:background="#FFFFFF">
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/backButton"
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:paddingTop="10dp"
@@ -189,6 +189,9 @@
             android:layout_margin="8dp"
             android:background="#BD4588"
             android:text="प्रस्तावित स्थल(Proposed Site)"
+            android:drawableRight="@drawable/ic_forward"
+            android:drawablePadding="2dp"
+            android:paddingEnd="20dp"
             android:textColor="#070505"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/content1"
@@ -201,8 +204,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="#FFFF00"
+            android:drawableRight="@drawable/ic_forward"
+            android:drawablePadding="2dp"
             android:text="प्लिंथ स्तर(Plinth Site)"
             android:textColor="#070505"
+            android:paddingEnd="20dp"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/proposed_site_button"
             app:layout_constraintStart_toStartOf="parent"
@@ -215,11 +221,16 @@
             android:layout_margin="8dp"
             android:background="#0F0FEC"
             android:text="छत ढलाई स्थल(Roof Cast Site)"
-            android:textColor="#070505"
+            android:drawableEnd="@drawable/ic_forward"
+            android:drawablePadding="2dp"
+            android:paddingEnd="20dp"
+          android:textColor="#070505"
             android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/plinth_level_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/plinth_level_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/completed_site_button"
@@ -228,6 +239,9 @@
             android:layout_margin="8dp"
             android:background="#0AC10A"
             android:text="पूर्ण स्थल(Completed Site)"
+            android:drawableRight="@drawable/ic_forward"
+            android:drawablePadding="2dp"
+            android:paddingEnd="20dp"
             android:textColor="#070505"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/roof_slab_button"

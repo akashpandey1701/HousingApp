@@ -1,5 +1,7 @@
 package com.example.housingapp;
 
+import static com.example.housingapp.R.drawable.ic_launcher_background;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.os.Bundle;
@@ -39,11 +42,14 @@ public class FragmentInspection extends Fragment {
     private Button photobutton1;
     private Button photobutton2;
     private Button photobutton3;
+
+    private ImageView backButton;
     private ImageView imageView;
     private ImageView imageView2;
     private ImageView imageView3;
     private TextView latitudeTextView;
     private TextView longitudeTextView;
+    private  Button submitButton;
     private double latitude;
     private double longitude;
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -64,10 +70,10 @@ public class FragmentInspection extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         imageView2 = view.findViewById(R.id.imageView2);
         imageView3 = view.findViewById(R.id.imageView3);
+
         latitudeTextView = view.findViewById(R.id.latitudeTextView);
         longitudeTextView = view.findViewById(R.id.longitudeTextView);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
-
         photobutton1.setOnClickListener(v -> takePicture(IMAGE_ID1));
         photobutton2.setOnClickListener(v -> takePicture(IMAGE_ID2));
         photobutton3.setOnClickListener(v -> takePicture(IMAGE_ID3));
@@ -175,12 +181,27 @@ public class FragmentInspection extends Fragment {
                 if (imagesTaken[2]) {
                     saveImageToDatabase(imageView3.getDrawable(), IMAGE_ID3);
                 }
+
+                requireActivity().runOnUiThread(() -> {
+                    new Handler().postDelayed(() -> {
+                        imageView.setImageResource(ic_launcher_background);
+                        imageView2.setImageResource(ic_launcher_background);
+                        imageView3.setImageResource(ic_launcher_background);
+                        latitudeTextView.setText("");
+                        longitudeTextView.setText("");
+                        imagesTaken[0] = false;
+                        imagesTaken[1] = false;
+                        imagesTaken[2] = false;
+
+                        Toast.makeText(getContext(), "Data submitted successfully", Toast.LENGTH_SHORT).show();
+                    }, 1000);
+                });
             }).start();
-            Toast.makeText(getContext(), "Data submitted successfully", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), "No images taken", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private void saveImageToDatabase(Drawable drawable, int imageId) {
         if (drawable instanceof BitmapDrawable) {
