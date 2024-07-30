@@ -32,6 +32,10 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class FragmentInspection extends Fragment {
     private static final int IMAGE_ID1 = 1;
     private static final int IMAGE_ID2 = 2;
@@ -70,6 +74,7 @@ public class FragmentInspection extends Fragment {
         imageView = view.findViewById(R.id.imageView);
         imageView2 = view.findViewById(R.id.imageView2);
         imageView3 = view.findViewById(R.id.imageView3);
+       TextView  currentDate = view.findViewById(R.id.inspection);
 
         latitudeTextView = view.findViewById(R.id.latitudeTextView);
         longitudeTextView = view.findViewById(R.id.longitudeTextView);
@@ -77,9 +82,9 @@ public class FragmentInspection extends Fragment {
         photobutton1.setOnClickListener(v -> takePicture(IMAGE_ID1));
         photobutton2.setOnClickListener(v -> takePicture(IMAGE_ID2));
         photobutton3.setOnClickListener(v -> takePicture(IMAGE_ID3));
-
         Button submitButton = view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(v -> submitData());
+        setCurrentDate();
     }
 
     private void takePicture(int imageId) {
@@ -115,7 +120,7 @@ public class FragmentInspection extends Fragment {
                             Toast.makeText(getContext(), "Failed to fetch location: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
             } else {
-                // Prompt the user to enable location services
+
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
@@ -142,6 +147,12 @@ public class FragmentInspection extends Fragment {
                 Toast.makeText(getContext(), "Camera permission is required to take photos", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void setCurrentDate() {
+        String date = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Calendar.getInstance().getTime());
+        TextView dateTextView = getView().findViewById(R.id.inspection);
+        dateTextView.setText("Inspection Date: " + date);
     }
 
     @Override

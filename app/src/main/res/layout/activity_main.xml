@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="#B0C0CA"
+    android:background="#E0E5E8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -14,19 +14,13 @@
         android:paddingTop="10dp"
         android:layout_height="80dp"
         android:orientation="horizontal"
-        android:background="#BDD2DF"
+        android:background="#D2D8DC"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageView3"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:padding="8dp"
-            app:srcCompat="@drawable/sync" />
+
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imageView2"

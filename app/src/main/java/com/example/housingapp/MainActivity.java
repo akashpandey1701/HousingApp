@@ -1,20 +1,19 @@
 package com.example.housingapp;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,23 +30,39 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         villageList = new ArrayList<>();
-        villageList.add(new Village("मुखिया 1", "ग्राम 1", "जिला 1"));
-        villageList.add(new Village("मुखिया 2", "ग्राम 2", "जिला 2"));
-        villageList.add(new Village("मुखिया 3", "ग्राम 3", "जिला 3"));
-        villageList.add(new Village("मुखिया 1", "ग्राम 1", "जिला 1"));
-        villageList.add(new Village("मुखिया 2", "ग्राम 2", "जिला 2"));
-        villageList.add(new Village("मुखिया 3", "ग्राम 3", "जिला 3"));
-        villageList.add(new Village("मुखिया 1", "ग्राम 1", "जिला 1"));
-        villageList.add(new Village("मुखिया 2", "ग्राम 2", "जिला 2"));
-        villageList.add(new Village("मुखिया 3", "ग्राम 3", "जिला 3"));
-        villageList.add(new Village("मुखिया 1", "ग्राम 1", "जिला 1"));
-        villageList.add(new Village("मुखिया 2", "ग्राम 2", "जिला 2"));
-        villageList.add(new Village("मुखिया 3", "ग्राम 3", "जिला 3"));
-        villageList.add(new Village("मुखिया 1", "ग्राम 1", "जिला 1"));
-        villageList.add(new Village("मुखिया 2", "ग्राम 2", "जिला 2"));
-        villageList.add(new Village("मुखिया 3", "ग्राम 3", "जिला 3"));
-
         adapter = new VillageAdapter(villageList, this);
         recyclerView.setAdapter(adapter);
+
+        fetchVillages();
+    }
+
+    private void fetchVillages() {
+        ApiService apiService = RetrofitClient.getClient("http://192.168.44.107:8080/")
+                .create(ApiService.class);
+
+        Call<List<Village>> call = apiService.getVillages();
+        call.enqueue(new Callback<List<Village>>() {
+            @Override
+            public void onResponse(Call<List<Village>> call, Response<List<Village>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    villageList.clear();
+                    villageList.addAll(response.body());
+                    adapter.notifyDataSetChanged();
+
+                    for (Village village : response.body()) {
+                        Log.d("VillageData", "HeadName: " + village.getHeadName());
+                        Log.d("VillageData", "VillageName: " + village.getVillageName());
+                        Log.d("VillageData", "District: " + village.getDistrict());
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Village>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

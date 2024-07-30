@@ -1,14 +1,28 @@
 package com.example.housingapp;
 
-public class Village {
-    private String headName;
-    private String villageName;
-    private String district;
+import com.google.gson.annotations.SerializedName;
 
-    public Village(String headName, String villageName, String district) {
+public class Village {
+    @SerializedName("headname")
+    private String headName;
+
+    @SerializedName("villageName")
+    private String villageName;
+
+    @SerializedName("district")
+    private String district;
+    @SerializedName("raashanCardno")
+    private String rationCardNumber;
+    @SerializedName("adharCardno")
+    private String aadharCardNumber;
+
+
+    public Village(String headName, String villageName, String district, String rationCardNumber, String aadharCardNumber) {
         this.headName = headName;
         this.villageName = villageName;
         this.district = district;
+        this.rationCardNumber = rationCardNumber;
+        this.aadharCardNumber = aadharCardNumber;
     }
 
     public String getHeadName() {
@@ -33,5 +47,21 @@ public class Village {
 
     public void setDistrict(String district) {
         this.district = district;
+    }
+
+    public String getRationCardNumber() {
+        return rationCardNumber;
+    }
+
+    public void setRationCardNumber(String rationCardNumber) {
+        this.rationCardNumber = rationCardNumber;
+    }
+
+    public String getAadharCardNumber() {
+        return aadharCardNumber;
+    }
+
+    public void setAadharCardNumber(String aadharCardNumber) {
+        this.aadharCardNumber = aadharCardNumber;
     }
 }

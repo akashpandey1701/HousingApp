@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,7 +41,11 @@ public class VillageAdapter extends RecyclerView.Adapter<VillageAdapter.VillageV
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MainActivity2.class);
-                // Pass any data you need to MainActivity2 using intent.putExtra()
+                intent.putExtra("headName", village.getHeadName());
+                intent.putExtra("villageName", village.getVillageName());
+                intent.putExtra("district", village.getDistrict());
+                intent.putExtra("rationCardNumber", village.getRationCardNumber());
+                intent.putExtra("aadharCardNumber", village.getAadharCardNumber());
                 context.startActivity(intent);
             }
         });
@@ -57,7 +60,6 @@ public class VillageAdapter extends RecyclerView.Adapter<VillageAdapter.VillageV
         TextView headNameTextView;
         TextView villageNameTextView;
         TextView districtTextView;
-        Button syncButton;
         CardView cardView;
 
         public VillageViewHolder(@NonNull View itemView) {
@@ -65,7 +67,6 @@ public class VillageAdapter extends RecyclerView.Adapter<VillageAdapter.VillageV
             headNameTextView = itemView.findViewById(R.id.headNameTextView);
             villageNameTextView = itemView.findViewById(R.id.villageNameTextView);
             districtTextView = itemView.findViewById(R.id.districtTextView);
-            syncButton = itemView.findViewById(R.id.syncButton);
             cardView = itemView.findViewById(R.id.cardView);
         }
     }
