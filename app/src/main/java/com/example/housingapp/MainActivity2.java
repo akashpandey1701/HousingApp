@@ -44,7 +44,6 @@ public class MainActivity2 extends AppCompatActivity {
             rationCardNumber = savedInstanceState.getString(KEY_RATION_CARD_NUMBER);
             aadharCardNumber = savedInstanceState.getString(KEY_AADHAR_CARD_NUMBER);
         } else {
-
             Intent intent = getIntent();
             headName = intent.getStringExtra("headName");
             villageName = intent.getStringExtra("villageName");
@@ -69,25 +68,16 @@ public class MainActivity2 extends AppCompatActivity {
         Button button2 = findViewById(R.id.roof_slab_button);
         Button button3 = findViewById(R.id.completed_site_button);
 
-        button.setOnClickListener(v -> {
-            Intent siteIntent = new Intent(MainActivity2.this, MainActivity3.class);
-            startActivity(siteIntent);
-        });
+        button.setOnClickListener(v -> startMainActivity3(aadharCardNumber));
+        button1.setOnClickListener(v -> startMainActivity3(aadharCardNumber));
+        button2.setOnClickListener(v -> startMainActivity3(aadharCardNumber));
+        button3.setOnClickListener(v -> startMainActivity3(aadharCardNumber));
+    }
 
-        button1.setOnClickListener(v -> {
-            Intent siteIntent = new Intent(MainActivity2.this, MainActivity3.class);
-            startActivity(siteIntent);
-        });
-
-        button2.setOnClickListener(v -> {
-            Intent siteIntent = new Intent(MainActivity2.this, MainActivity3.class);
-            startActivity(siteIntent);
-        });
-
-        button3.setOnClickListener(v -> {
-            Intent siteIntent = new Intent(MainActivity2.this, MainActivity3.class);
-            startActivity(siteIntent);
-        });
+    private void startMainActivity3(String aadharCardNumber) {
+        Intent siteIntent = new Intent(MainActivity2.this, MainActivity3.class);
+        siteIntent.putExtra("aadhaarCardNumber", aadharCardNumber);
+        startActivity(siteIntent);
     }
 
     @Override
@@ -100,3 +90,5 @@ public class MainActivity2 extends AppCompatActivity {
         outState.putString(KEY_AADHAR_CARD_NUMBER, aadharCardNumber);
     }
 }
+
+

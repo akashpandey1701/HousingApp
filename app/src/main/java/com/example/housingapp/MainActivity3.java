@@ -3,8 +3,6 @@ package com.example.housingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,20 +19,22 @@ public class MainActivity3 extends AppCompatActivity {
     private ViewPager2 viewPager;
     private AppCompatButton buttonTab1, buttonTab2;
     private ImageView backButton;
+    private String aadhaarCardNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main3);
+
+        Intent intent = getIntent();
+        aadhaarCardNumber = intent.getStringExtra("aadhaarCardNumber");
 
         viewPager = findViewById(R.id.viewPager);
         buttonTab1 = findViewById(R.id.buttonTab1);
         buttonTab2 = findViewById(R.id.buttonTab2);
-        backButton=findViewById(R.id.backButton);
-        MyFragmentStateAdapter adapter = new MyFragmentStateAdapter(this);
+        backButton = findViewById(R.id.backButton);
+        MyFragmentStateAdapter adapter = new MyFragmentStateAdapter(this, aadhaarCardNumber);
         viewPager.setAdapter(adapter);
-
 
         buttonTab1.setOnClickListener(v -> viewPager.setCurrentItem(0));
         buttonTab2.setOnClickListener(v -> viewPager.setCurrentItem(1));
@@ -42,6 +42,7 @@ public class MainActivity3 extends AppCompatActivity {
             Intent i = new Intent(MainActivity3.this, MainActivity2.class);
             startActivity(i);
         });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -50,20 +51,32 @@ public class MainActivity3 extends AppCompatActivity {
     }
 
     private static class MyFragmentStateAdapter extends FragmentStateAdapter {
-        public MyFragmentStateAdapter(@NonNull FragmentActivity fragmentActivity) {
+        private final String aadhaarCardNumber;
+
+        public MyFragmentStateAdapter(@NonNull FragmentActivity fragmentActivity, String aadhaarCardNumber) {
             super(fragmentActivity);
+            this.aadhaarCardNumber = aadhaarCardNumber;
         }
 
         @NonNull
         @Override
         public Fragment createFragment(int position) {
+            Fragment fragment;
             switch (position) {
                 case 1:
-                    return new FragmentFinancial();
+                    fragment = new FragmentFinancial();
+                    break;
                 case 0:
                 default:
-                    return new FragmentInspection();
+                    fragment = new FragmentInspection();
+                    break;
             }
+
+            Bundle args = new Bundle();
+            args.putString("aadhaarCardNumber", aadhaarCardNumber);
+            fragment.setArguments(args);
+
+            return fragment;
         }
 
         @Override

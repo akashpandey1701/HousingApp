@@ -6,7 +6,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import android.content.Context;
 
-@Database(entities = {ImageEntity.class}, version = 1)
+@Database(entities = {ImageEntity.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract ImageDao imageDao();
 

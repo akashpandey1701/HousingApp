@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class FragmentInspection extends Fragment {
     private ImageView backButton;
     private ImageView imageView;
     private ImageView imageView2;
+    private String aadhaarCardNumber;
     private ImageView imageView3;
     private TextView latitudeTextView;
     private TextView longitudeTextView;
@@ -86,6 +88,13 @@ public class FragmentInspection extends Fragment {
         Button submitButton = view.findViewById(R.id.submitButton);
         submitButton.setOnClickListener(v -> submitData());
         setCurrentDate();
+
+        if (getArguments() != null) {
+            aadhaarCardNumber = getArguments().getString("aadhaarCardNumber");
+            Log.d("FragmentInspection", "Received Aadhaar Card Number: " + aadhaarCardNumber);
+        } else {
+            Log.e("FragmentInspection", "Failed to receive Aadhaar Card Number from arguments");
+        }
     }
 
     private void takePicture(int imageId) {
@@ -137,7 +146,7 @@ public class FragmentInspection extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                fetchLocationAndTakePicture(IMAGE_ID1);  // Optionally specify imageId here if needed
+                fetchLocationAndTakePicture(IMAGE_ID1);
             } else {
                 Toast.makeText(getContext(), "Location permission required", Toast.LENGTH_SHORT).show();
             }
@@ -219,7 +228,6 @@ public class FragmentInspection extends Fragment {
         if (drawable instanceof BitmapDrawable) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
 
-
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             int quality = 80;
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
@@ -229,12 +237,19 @@ public class FragmentInspection extends Fragment {
             imageEntity.setImageData(imageData);
             imageEntity.setLatitude(latitude);
             imageEntity.setLongitude(longitude);
-            Log.d("FragmentInspection", "Saving image with Latitude: " + latitude + " Longitude: " + longitude);
+            imageEntity.setAadhaarCardNumber(aadhaarCardNumber);
+            Log.d("FragmentInspection", "Saving image with Latitude and AdharCard" + latitude +" " + longitude +" "+ aadhaarCardNumber);
 
-            AppDatabase database = AppDatabase.getDatabase(requireContext());
-            database.imageDao().insertImage(imageEntity);
+
+            new Thread(() -> {
+                AppDatabase database = AppDatabase.getDatabase(requireContext());
+                database.imageDao().insertImage(imageEntity);
+                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(getContext(), "Image saved successfully", Toast.LENGTH_SHORT).show());
+            }).start();
         } else {
             Log.e("FragmentInspection", "Drawable is not a BitmapDrawable");
+            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(getContext(), "Drawable is not a BitmapDrawable", Toast.LENGTH_SHORT).show());
         }
     }
+
 }
