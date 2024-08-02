@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchVillages() {
-        ApiService apiService = RetrofitClient.getClient("http://192.168.44.107:8080/")
+        ApiService apiService = RetrofitClient.getClient("http://192.168.45.83:8080/")
                 .create(ApiService.class);
 
         Call<List<Village>> call = apiService.getVillages();

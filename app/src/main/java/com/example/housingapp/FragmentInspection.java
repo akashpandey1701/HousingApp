@@ -32,6 +32,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -217,7 +218,13 @@ public class FragmentInspection extends Fragment {
     private void saveImageToDatabase(Drawable drawable, int imageId) {
         if (drawable instanceof BitmapDrawable) {
             Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-            byte[] imageData = ImageUtils.bitmapToByteArray(bitmap);
+
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            int quality = 80;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            byte[] imageData = outputStream.toByteArray();
+
             ImageEntity imageEntity = new ImageEntity();
             imageEntity.setImageData(imageData);
             imageEntity.setLatitude(latitude);
